@@ -440,10 +440,11 @@ export default function LandingPage() {
 
         {/* ═══ HERO ═══ — exact finekot.ai structure */}
         <section id="hero" className="relative min-h-screen flex items-center justify-center dot-grid overflow-hidden">
-          {/* Glow orbs — same as finekot.ai */}
-          <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-pink-500/8 rounded-full blur-[150px]" />
-          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-orange-500/6 rounded-full blur-[120px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-[100px]" />
+          {/* Glow orbs — brighter to match finekot.ai warmth */}
+          <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-pink-500/[0.12] rounded-full blur-[150px]" />
+          <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-orange-500/[0.08] rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-purple-500/[0.08] rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-pink-900/[0.06] via-transparent to-transparent" />
 
           <div className="relative z-10 text-center px-6 max-w-4xl">
             {/* Label — same as finekot.ai "AI ARSENAL" */}

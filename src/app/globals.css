@@ -128,8 +128,8 @@
 /* Finekot Design System */
 .dot-grid {
   background-image:
-    linear-gradient(rgba(244, 114, 182, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 114, 182, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(244, 114, 182, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 114, 182, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
