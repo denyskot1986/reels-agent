@@ -11,6 +11,7 @@ import {
   Check,
   Star,
   Mail,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, createContext, useContext } from "react";
@@ -27,12 +28,16 @@ const t = {
     nav: { home: "Home", features: "Features", pricing: "Pricing", reviews: "Reviews" },
     cta: "Connect",
     heroLabel: "Instagram AI Automation",
-    heroTitle1: "Your Comments.",
-    heroTitle2: "Answered by AI.",
-    heroDesc: "Reels Agent auto-replies to every comment on your posts and reels. Sounds like you. Works 24/7. Boosts engagement by up to 3x.",
-    joinWaitlist: "Join Waitlist",
-    waitlistDone: "You're on the list! We'll notify you at launch.",
-    demoLink: "See Demo Dashboard →",
+    heroTitle1: "Reels",
+    heroTitle2: "Agent",
+    typewriter: [
+      "Auto-reply to every comment.",
+      "Boost engagement by 3x.",
+      "Sounds like you. Works 24/7.",
+      "Your AI comment machine.",
+    ],
+    heroBtn1: "Join Waitlist",
+    heroBtn2: "See Demo",
     featLabel: "What you get",
     featTitle1: "Everything to",
     featTitle2: "automate engagement",
@@ -66,9 +71,11 @@ const t = {
       { name: "Agency", desc: "For agencies managing clients", features: ["10 Instagram accounts", "Unlimited everything", "White-label option", "API access", "Dedicated account manager", "Custom AI training"] },
     ],
     mostPopular: "Most Popular",
+    joinWaitlist: "Join Waitlist",
     ctaTitle1: "Ready to",
     ctaTitle2: "automate",
     ctaDesc: "Join 2,000+ creators on the waitlist.",
+    waitlistDone: "You're on the list! We'll notify you at launch.",
     footer: "Reels Agent by Finekot",
     privacy: "Privacy",
     terms: "Terms",
@@ -78,12 +85,16 @@ const t = {
     nav: { home: "Главная", features: "Функции", pricing: "Цены", reviews: "Отзывы" },
     cta: "Связаться",
     heroLabel: "AI-автоматизация Instagram",
-    heroTitle1: "Ваши комментарии.",
-    heroTitle2: "Отвечает AI.",
-    heroDesc: "Reels Agent автоматически отвечает на каждый комментарий. Звучит как вы. Работает 24/7. Увеличивает вовлечённость до 3x.",
-    joinWaitlist: "В очередь",
-    waitlistDone: "Вы в списке! Мы сообщим о запуске.",
-    demoLink: "Смотреть демо →",
+    heroTitle1: "Reels",
+    heroTitle2: "Agent",
+    typewriter: [
+      "Авто-ответ на каждый комментарий.",
+      "Рост вовлечённости до 3x.",
+      "Звучит как вы. Работает 24/7.",
+      "Ваша AI комментарий-машина.",
+    ],
+    heroBtn1: "В очередь",
+    heroBtn2: "Смотреть демо",
     featLabel: "Что вы получите",
     featTitle1: "Всё для",
     featTitle2: "автоматизации",
@@ -117,9 +128,11 @@ const t = {
       { name: "Agency", desc: "Для агентств", features: ["10 аккаунтов Instagram", "Безлимит всего", "White-label", "API доступ", "Персональный менеджер", "Кастомная AI-настройка"] },
     ],
     mostPopular: "Популярный",
+    joinWaitlist: "В очередь",
     ctaTitle1: "Готовы",
     ctaTitle2: "автоматизировать",
     ctaDesc: "Присоединяйтесь к 2000+ креаторов.",
+    waitlistDone: "Вы в списке! Мы сообщим о запуске.",
     footer: "Reels Agent от Finekot",
     privacy: "Приватность",
     terms: "Условия",
@@ -129,12 +142,16 @@ const t = {
     nav: { home: "Головна", features: "Функції", pricing: "Ціни", reviews: "Відгуки" },
     cta: "Зв'язатися",
     heroLabel: "AI-автоматизація Instagram",
-    heroTitle1: "Ваші коментарі.",
-    heroTitle2: "Відповідає AI.",
-    heroDesc: "Reels Agent автоматично відповідає на кожен коментар. Звучить як ви. Працює 24/7. Збільшує залученість до 3x.",
-    joinWaitlist: "В чергу",
-    waitlistDone: "Ви в списку! Ми повідомимо про запуск.",
-    demoLink: "Дивитися демо →",
+    heroTitle1: "Reels",
+    heroTitle2: "Agent",
+    typewriter: [
+      "Авто-відповідь на кожен коментар.",
+      "Зростання залученості до 3x.",
+      "Звучить як ви. Працює 24/7.",
+      "Ваша AI коментар-машина.",
+    ],
+    heroBtn1: "В чергу",
+    heroBtn2: "Дивитися демо",
     featLabel: "Що ви отримаєте",
     featTitle1: "Все для",
     featTitle2: "автоматизації",
@@ -168,9 +185,11 @@ const t = {
       { name: "Agency", desc: "Для агенцій", features: ["10 акаунтів Instagram", "Безліміт всього", "White-label", "API доступ", "Персональний менеджер", "Кастомне AI-налаштування"] },
     ],
     mostPopular: "Популярний",
+    joinWaitlist: "В чергу",
     ctaTitle1: "Готові",
     ctaTitle2: "автоматизувати",
     ctaDesc: "Приєднуйтесь до 2000+ креаторів.",
+    waitlistDone: "Ви в списку! Ми повідомимо про запуск.",
     footer: "Reels Agent від Finekot",
     privacy: "Приватність",
     terms: "Умови",
@@ -217,21 +236,58 @@ function LangSwitcher() {
   const { lang, setLang } = useLang();
   const langs: Lang[] = ["en", "ru", "ua"];
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex items-center gap-1">
       {langs.map((l) => (
         <button
           key={l}
           onClick={() => setLang(l)}
-          className={`text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded transition-all duration-200 ${
+          className={`text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full border transition-all duration-200 ${
             lang === l
-              ? "text-pink-400 bg-pink-500/10"
-              : "text-pink-200/30 hover:text-pink-300"
+              ? "text-pink-400 bg-pink-500/10 border-pink-500/30"
+              : "text-pink-200/30 hover:text-pink-300 border-transparent hover:border-pink-500/10"
           }`}
         >
           {l}
         </button>
       ))}
     </div>
+  );
+}
+
+function Typewriter({ texts }: { texts: string[] }) {
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = texts[index];
+    const speed = isDeleting ? 30 : 60;
+
+    if (!isDeleting && text === current) {
+      const timeout = setTimeout(() => setIsDeleting(true), 2000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (isDeleting && text === "") {
+      setIsDeleting(false);
+      setIndex((prev) => (prev + 1) % texts.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setText(
+        isDeleting ? current.slice(0, text.length - 1) : current.slice(0, text.length + 1)
+      );
+    }, speed);
+
+    return () => clearTimeout(timeout);
+  }, [text, isDeleting, index, texts]);
+
+  return (
+    <span className="text-xl md:text-2xl text-pink-300/60 font-mono">
+      {text}
+      <span className="animate-pulse text-pink-400">_</span>
+    </span>
   );
 }
 
@@ -317,7 +373,7 @@ export default function LandingPage() {
       <div className="min-h-screen bg-[#0a0608] text-[#ede0e4]">
         <ScrollProgress />
 
-        {/* ═══ NAVBAR ═══ */}
+        {/* ═══ NAVBAR ═══ — exact finekot.ai style */}
         <motion.nav
           initial={{ y: -80 }}
           animate={{ y: 0 }}
@@ -331,6 +387,7 @@ export default function LandingPage() {
               &lt;RA/&gt;
             </a>
 
+            {/* Desktop links */}
             <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => {
                 const id = link.href.slice(1);
@@ -345,10 +402,11 @@ export default function LandingPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="hidden md:block"><LangSwitcher /></div>
               <a href="#waitlist" className="hidden md:block text-sm px-4 py-2 rounded-lg border border-pink-500/20 hover:border-pink-400/60 hover:bg-pink-500/10 hover:shadow-[0_0_15px_rgba(244,114,182,0.15)] transition-all duration-200 font-mono text-pink-300">
                 {s.cta}
               </a>
+
+              {/* Hamburger — exact finekot.ai style */}
               <button onClick={() => setMenuOpen((v) => !v)} className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-lg border border-pink-500/20 hover:border-pink-400/40 transition-colors" aria-label="Toggle menu">
                 <motion.span animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} transition={{ duration: 0.2 }} className="w-5 h-px bg-pink-400 block" />
                 <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} transition={{ duration: 0.2 }} className="w-5 h-px bg-pink-400 block" />
@@ -357,6 +415,7 @@ export default function LandingPage() {
             </div>
           </div>
 
+          {/* Mobile dropdown — exact finekot.ai style */}
           <AnimatePresence>
             {menuOpen && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25 }} className="md:hidden overflow-hidden border-t border-pink-500/10">
@@ -370,7 +429,6 @@ export default function LandingPage() {
                       </a>
                     );
                   })}
-                  <div className="px-4 py-2"><LangSwitcher /></div>
                   <a href="#waitlist" onClick={() => setMenuOpen(false)} className="mt-2 px-4 py-3 rounded-lg border border-pink-500/30 text-center text-sm font-mono text-pink-300 hover:bg-pink-500/10 transition-all">
                     {s.cta}
                   </a>
@@ -380,32 +438,97 @@ export default function LandingPage() {
           </AnimatePresence>
         </motion.nav>
 
-        {/* ═══ HERO ═══ */}
+        {/* ═══ HERO ═══ — exact finekot.ai structure */}
         <section id="hero" className="relative min-h-screen flex items-center justify-center dot-grid overflow-hidden">
+          {/* Glow orbs — same as finekot.ai */}
           <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-pink-500/8 rounded-full blur-[150px]" />
           <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-orange-500/6 rounded-full blur-[120px]" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-[100px]" />
 
           <div className="relative z-10 text-center px-6 max-w-4xl">
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-xs uppercase tracking-[0.4em] text-pink-400/50 mb-6 font-mono">
+            {/* Label — same as finekot.ai "AI ARSENAL" */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-xs uppercase tracking-[0.4em] text-pink-400/50 mb-6 font-mono"
+            >
               {s.heroLabel}
             </motion.p>
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-              {s.heroTitle1}{" "}<span className="gradient-text">{s.heroTitle2}</span>
+
+            {/* Title — same as finekot.ai "Finekot Systems" */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
+            >
+              {s.heroTitle1}{" "}
+              <span className="gradient-text">{s.heroTitle2}</span>
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="mx-auto mb-10 max-w-2xl text-lg text-pink-100/50 md:text-xl">
-              {s.heroDesc}
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} id="waitlist" className="flex flex-col items-center gap-4">
-              <WaitlistForm />
-              <Link href="/dashboard"><span className="text-xs font-mono text-pink-300/30 hover:text-pink-300 transition-colors cursor-pointer">{s.demoLink}</span></Link>
+
+            {/* Typewriter — same as finekot.ai */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="h-10 mb-10"
+            >
+              <Typewriter texts={s.typewriter} />
+            </motion.div>
+
+            {/* Two buttons — same as finekot.ai "View Products" + "Request Integration" */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center max-w-sm sm:max-w-none mx-auto"
+            >
+              <a
+                href="#waitlist"
+                className="px-8 py-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white font-medium rounded-lg hover:from-pink-500 hover:to-pink-400 hover:shadow-[0_0_30px_rgba(244,114,182,0.3)] transition-all text-center"
+              >
+                {s.heroBtn1}
+              </a>
+              <Link href="/dashboard">
+                <span className="block px-8 py-3 border border-pink-500/20 rounded-lg hover:border-pink-400/50 hover:bg-pink-500/5 transition-all text-pink-200 text-center cursor-pointer">
+                  {s.heroBtn2}
+                </span>
+              </Link>
+            </motion.div>
+
+            {/* Language switcher — below buttons, same position as finekot.ai */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="flex justify-center mt-8"
+            >
+              <LangSwitcher />
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="absolute bottom-10 left-1/2 -translate-x-1/2">
+          {/* Scroll indicator — exact finekot.ai style: SCROLL text + dot + chevron */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          >
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-pink-400/30">Scroll</span>
             <div className="w-6 h-10 border-2 border-pink-500/20 rounded-full flex justify-center pt-2">
-              <motion.div animate={{ y: [0, 12, 0] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1.5 h-1.5 bg-pink-400/60 rounded-full" />
+              <motion.div
+                animate={{ y: [0, 12, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-1.5 h-1.5 bg-pink-400/60 rounded-full"
+              />
             </div>
+            <motion.div
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <ChevronDown className="w-4 h-4 text-pink-400/30" />
+            </motion.div>
           </motion.div>
         </section>
 
@@ -516,8 +639,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ CTA ═══ */}
-        <section className="py-32 dot-grid relative overflow-hidden">
+        {/* ═══ CTA + WAITLIST ═══ */}
+        <section id="waitlist" className="py-32 dot-grid relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-500/[0.06] rounded-full blur-[120px]" />
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative z-10 mx-auto max-w-2xl px-6 text-center">
             <h2 className="mb-4 text-3xl font-bold md:text-5xl">{s.ctaTitle1}{" "}<span className="gradient-text">{s.ctaTitle2}</span>?</h2>
