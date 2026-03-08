@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   MessageSquare,
   Zap,
@@ -13,8 +14,11 @@ import {
   ArrowRight,
   Check,
   Star,
+  Mail,
+  Menu,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 const features = [
   {
@@ -61,7 +65,7 @@ const plans = [
       "Basic tone settings",
       "Email support",
     ],
-    cta: "Start Free Trial",
+    cta: "Join Waitlist",
     popular: false,
   },
   {
@@ -77,7 +81,7 @@ const plans = [
       "Analytics dashboard",
       "Banned topics filter",
     ],
-    cta: "Start Free Trial",
+    cta: "Join Waitlist",
     popular: true,
   },
   {
@@ -93,7 +97,7 @@ const plans = [
       "Dedicated account manager",
       "Custom AI training",
     ],
-    cta: "Contact Sales",
+    cta: "Join Waitlist",
     popular: false,
   },
 ];
@@ -119,6 +123,44 @@ const testimonials = [
   },
 ];
 
+function WaitlistForm({ className = "" }: { className?: string }) {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubmitted(true);
+    setEmail("");
+  };
+
+  if (submitted) {
+    return (
+      <div className={`flex items-center justify-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-6 py-3 ${className}`}>
+        <Check className="h-5 w-5 text-green-500" />
+        <span className="text-sm font-medium text-green-400">You&apos;re on the list! We&apos;ll notify you at launch.</span>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className={`flex w-full max-w-md gap-2 ${className}`}>
+      <Input
+        type="email"
+        placeholder="your@email.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        className="h-11"
+      />
+      <Button type="submit" size="lg" className="shrink-0 gap-2">
+        <Mail className="h-4 w-4" />
+        Join Waitlist
+      </Button>
+    </form>
+  );
+}
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
@@ -140,15 +182,37 @@ export default function LandingPage() {
               Reviews
             </a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 sm:flex">
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm">Log In</Button>
+              <Button variant="ghost" size="sm">Demo</Button>
             </Link>
-            <Link href="/pay">
+            <a href="#waitlist">
               <Button size="sm">
-                Get Started <ArrowRight className="ml-1 h-4 w-4" />
+                Join Waitlist <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
-            </Link>
+            </a>
+          </div>
+          {/* Mobile menu button */}
+          <button
+            className="sm:hidden p-2"
+            onClick={() => {
+              const menu = document.getElementById("mobile-menu");
+              menu?.classList.toggle("hidden");
+            }}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+        {/* Mobile dropdown */}
+        <div id="mobile-menu" className="hidden border-t border-border/40 px-6 py-4 sm:hidden">
+          <div className="flex flex-col gap-3">
+            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition">Features</a>
+            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition">Pricing</a>
+            <a href="#testimonials" className="text-sm text-muted-foreground hover:text-foreground transition">Reviews</a>
+            <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition">Demo</Link>
+            <a href="#waitlist">
+              <Button size="sm" className="w-full">Join Waitlist</Button>
+            </a>
           </div>
         </div>
       </nav>
@@ -170,20 +234,16 @@ export default function LandingPage() {
             Reels Agent auto-replies to every comment on your posts and reels.
             Sounds like you. Works 24/7. Boosts engagement by up to 3x.
           </p>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/pay">
-              <Button size="lg" className="text-base px-8">
-                Start 7-Day Free Trial <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+          <div id="waitlist" className="flex flex-col items-center gap-4">
+            <WaitlistForm />
             <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="text-base px-8">
-                See Demo Dashboard
+              <Button size="sm" variant="ghost" className="text-muted-foreground">
+                See Demo Dashboard <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
-            No credit card required. Cancel anytime.
+            Launching soon. Join 2,000+ on the waitlist.
           </p>
         </div>
       </section>
@@ -262,8 +322,11 @@ export default function LandingPage() {
           <h2 className="mb-4 text-center text-3xl font-bold md:text-4xl">
             Simple pricing. No surprises.
           </h2>
+          <Badge variant="secondary" className="mx-auto mb-4 block w-fit">
+            Coming Soon
+          </Badge>
           <p className="mb-16 text-center text-muted-foreground">
-            Start free. Upgrade when you&apos;re ready.
+            Join the waitlist. Be first when we launch.
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             {plans.map((p) => (
@@ -289,11 +352,11 @@ export default function LandingPage() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/pay">
+                  <a href="#waitlist">
                     <Button className="w-full" variant={p.popular ? "default" : "outline"}>
                       {p.cta}
                     </Button>
-                  </Link>
+                  </a>
                 </CardContent>
               </Card>
             ))}
@@ -305,12 +368,8 @@ export default function LandingPage() {
       <section className="py-24">
         <div className="mx-auto max-w-2xl px-6 text-center">
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">Ready to automate your comments?</h2>
-          <p className="mb-8 text-muted-foreground">Join 2,000+ creators who never miss a comment.</p>
-          <Link href="/pay">
-            <Button size="lg" className="px-8 text-base">
-              Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <p className="mb-8 text-muted-foreground">Join 2,000+ creators on the waitlist. Be first when we launch.</p>
+          <WaitlistForm className="mx-auto justify-center" />
         </div>
       </section>
 
